@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: homer-service
+
+logging:
+  level:
+    root: info
+
+server:
+  port: 8088
+
+ssdp:
+  timeout: 2000
+
+
+java:
+  net:
+    preferIPv4Stack: true

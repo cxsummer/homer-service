@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="DEBUG">
+
+    <Properties>
+        <Property name="APP_NAME" value="homer"/>
+        <Property name="LOG_HOME" value="${sys:log.dir:-../logs/homer-service}"/>
+        <property name="ENCODER_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %level [%p] - %l - %m%n"/>
+        <Property name="SMS_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %m%n"/>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${ENCODER_PATTERN}" />
+        </Console>
+
+
+        <RollingFile name="INFO_FILE" filename="${LOG_HOME}/${APP_NAME}_info.log" filepattern="${LOG_HOME}/${APP_NAME}_info.log.%d{yyyy-MM-dd}">
+            <Filters>
+                <ThresholdFilter level="WARN"  onMatch="DENY"   onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="INFO"  onMatch="ACCEPT" />
+            </Filters>
+
+            <PatternLayout pattern="${ENCODER_PATTERN}" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+            </Policies>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingFile>
+
+        <RollingFile name="WARN_FILE" filename="${LOG_HOME}/${APP_NAME}_warn.log" filepattern="${LOG_HOME}/${APP_NAME}_warn.log.%d{yyyy-MM-dd}">
+            <Filters>
+                <ThresholdFilter level="ERROR"  onMatch="DENY"   onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="WARN" onMatch="ACCEPT" />
+            </Filters>
+
+            <PatternLayout pattern="${ENCODER_PATTERN}" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+            </Policies>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingFile>
+
+        <RollingFile name="ERROR_FILE" filename="${LOG_HOME}/${APP_NAME}_error.log" filepattern="${LOG_HOME}/${APP_NAME}_error.log.%d{yyyy-MM-dd}">
+            <Filters>
+                <ThresholdFilter level="ERROR" onMatch="ACCEPT" />
+            </Filters>
+            <PatternLayout pattern="${ENCODER_PATTERN}" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+            </Policies>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingFile>
+
+    </Appenders>
+
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="INFO_FILE"/>
+            <AppenderRef ref="WARN_FILE"/>
+            <AppenderRef ref="ERROR_FILE"/>
+        </Root>
+    </Loggers>
+</Configuration>
