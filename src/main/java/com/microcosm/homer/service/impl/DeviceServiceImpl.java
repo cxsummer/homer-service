@@ -58,7 +58,7 @@ public class DeviceServiceImpl implements DeviceService {
         HttpRespBO httpRespBO = httpPostXml(actionUrl, xml, headerMap);
         return Optional.ofNullable(httpRespBO).filter(HttpRespBO::success).map(r -> Result.empty()).orElseGet(() -> {
             log.error("执行动作失败,{},{},{}", actionUrl, xml, HttpRespBO.getMsg(httpRespBO));
-            return Result.fail("设置播放资源失败");
+            return Result.fail("执行动作失败");
         });
     }
 

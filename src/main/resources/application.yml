@@ -10,7 +10,7 @@ server:
   port: 8088
 
 ssdp:
-  timeout: 2000
+  timeout: 5000
 
 
 java:

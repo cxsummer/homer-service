@@ -5,6 +5,7 @@ import com.microcosm.homer.enums.SSDPStEnum;
 import com.microcosm.homer.model.*;
 import com.microcosm.homer.service.DeviceService;
 import com.microcosm.homer.service.SSDPService;
+import com.microcosm.homer.utils.NetUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,32 +33,18 @@ public class DeviceTest {
         Result<List<DeviceDescBO>> ssdpResult = ssdpService.discover(SSDPStEnum.AV_TRANSPORT_V1);
         List<DeviceDescBO> list = ssdpResult.getData();
         System.out.println(list);
-        /*SSDPRespBO ssdpRespBO = list.get(0);
-        String desUrl = ssdpRespBO.getLocation();
-        Result<DeviceDescBO> deviceDesc = deviceService.getDeviceDesc(desUrl);
-        DeviceDescBO deviceDescBO = deviceDesc.getData();
+
+        DeviceDescBO deviceDescBO = list.get(0);
         System.out.println(deviceDescBO.getFriendlyName());
         List<ServiceVO> serviceList = deviceDescBO.getServiceList();
         ServiceVO serviceVO = serviceList.stream().filter(s -> SSDPStEnum.AV_TRANSPORT_V1.getType().equals(s.getServiceType())).findFirst().orElse(null);
-        int num = 0;
-        StringBuilder url = new StringBuilder();
-        for (int i = 0; i < desUrl.length(); i++) {
-            if (desUrl.charAt(i) == '/') {
-                num++;
-            }
-            url.append(desUrl.charAt(i));
-            if (num == 3) {
-                break;
-            }
-        }
+
         ActionBO urlAction = new ActionBO();
         urlAction.setProgress("0");
         urlAction.setSoapAction("\"" + serviceVO.getServiceType() + "#SetAVTransportURI\"");
-        urlAction.setResourceUrl("");
-        urlAction.setActionUrl(url + serviceVO.getControlUrl());
+        urlAction.setResourceUrl("http://192.168.8.2:8088/video/m3u8/100");
+        urlAction.setActionUrl(NetUtil.resolveRootUrl(deviceDescBO.getUrl())+"/" + serviceVO.getControlUrl());
         Result<Void> setUrlResult = deviceService.setResourceUrl(urlAction);
         System.out.println(setUrlResult.success());
-        Assert.assertTrue(result.success());
-        System.out.println(JSON.toJSONString(result));*/
     }
 }
