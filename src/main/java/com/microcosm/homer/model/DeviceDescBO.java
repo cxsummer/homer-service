@@ -16,6 +16,11 @@ public class DeviceDescBO {
     private String url;
 
     /**
+     * 根地址
+     */
+    private String rootUrl;
+
+    /**
      * 设备类型
      */
     private String deviceType;
@@ -24,6 +29,11 @@ public class DeviceDescBO {
      * 设备名称
      */
     private String friendlyName;
+
+    /**
+     * 设备uuid
+     */
+    private String udn;
 
     /**
      * 服务列表

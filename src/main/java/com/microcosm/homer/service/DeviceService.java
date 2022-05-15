@@ -33,4 +33,6 @@ public interface DeviceService {
      * @return Result
      */
     Result<Void> playResource(ActionBO actionBO);
+
+
 }

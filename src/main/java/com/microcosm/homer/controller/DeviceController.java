@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -41,6 +45,24 @@ public class DeviceController {
     @GetMapping("/notify/stop")
     public Result<Void> notifyStop(String serviceType) {
         return ssdpServiceTemp(serviceType, ssdpService::stopReceiveNotify);
+    }
+
+    //http method 为NOTIFY
+    @RequestMapping("/callback")
+    public void callback(HttpServletRequest request) throws IOException {
+        Enumeration paramNames = request.getHeaderNames();
+        while (paramNames.hasMoreElements()) {
+            String paramName = (String) paramNames.nextElement();
+
+            String paramValue = request.getHeader(paramName);
+            System.out.println("参数：" + paramName + "=" + paramValue);
+        }
+
+        int len = request.getContentLength();
+        ServletInputStream iii = request.getInputStream();
+        byte[] buffer = new byte[len];
+        iii.read(buffer, 0, len);
+        System.out.println(new String(buffer));
     }
 
     private <T> Result<T> ssdpServiceTemp(String serviceType, Function<SSDPStEnum, Result<T>> mapper) {

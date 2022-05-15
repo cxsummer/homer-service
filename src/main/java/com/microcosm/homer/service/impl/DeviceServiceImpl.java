@@ -76,6 +76,7 @@ public class DeviceServiceImpl implements DeviceService {
             Element rootElt = doc.getRootElement();
             Element recordEle = rootElt.element("device");
             Element serviceList = recordEle.element("serviceList");
+            deviceDescBO.setUdn(recordEle.elementTextTrim("UDN"));
             Iterator<?> iterator = serviceList.elementIterator("service");
             deviceDescBO.setDeviceType(recordEle.elementTextTrim("deviceType"));
             deviceDescBO.setFriendlyName(recordEle.elementTextTrim("friendlyName"));

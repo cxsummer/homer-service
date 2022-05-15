@@ -28,7 +28,7 @@ public class VideoController {
             byte[] buffer = new byte[(int) ts.length()];
             ts.read(buffer);
             String str = new String(buffer);
-            response.getWriter().write(str.replace("{}", "http://192.168.8.2:8088"));
+            response.getWriter().write(str.replace("{}", ""));
             response.getWriter().flush();
         } catch (Exception e) {
             log.error("错误", e);

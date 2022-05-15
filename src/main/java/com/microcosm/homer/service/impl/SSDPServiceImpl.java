@@ -144,7 +144,9 @@ public class SSDPServiceImpl implements SSDPService {
             String location = ssdpRespBO.getLocation();
             Result<DeviceDescBO> result = deviceService.getDeviceDesc(location);
             if (result.success()) {
+                String rootUrl = NetUtil.resolveRootUrl(location);
                 DeviceDescBO deviceDescBO = result.getData();
+                deviceDescBO.setRootUrl(rootUrl);
                 deviceDescBO.setUrl(location);
                 list.add(deviceDescBO);
             }
@@ -158,12 +160,12 @@ public class SSDPServiceImpl implements SSDPService {
             return null;
         }
         SSDPRespBO ssdpRespBO = new SSDPRespBO();
-        buildSSDPResp(Arrays.stream(respArray), ssdpRespBO);
+        buildSSDPResp(respArray, ssdpRespBO);
         return ssdpRespBO;
     }
 
-    private void buildSSDPResp(Stream<String> stream, SSDPRespBO ssdpRespBO) {
-        stream.skip(1).filter(h -> h.contains(":")).forEach(item -> {
+    private void buildSSDPResp(String[] resp, SSDPRespBO ssdpRespBO) {
+        Arrays.stream(resp).skip(1).filter(h -> h.contains(":")).forEach(item -> {
             int splitIndex = item.indexOf(":");
             String key = item.substring(0, splitIndex).trim().toLowerCase();
             Optional.of(key).map(SSDPRespBO.biConsumerMap::get).ifPresent(biConsumer ->
